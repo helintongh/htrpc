@@ -4,7 +4,7 @@ package fixbug; // 声明了代码所在的包（对于C++来说是namespace）
 
 // 定义下面的选项，表示生成service服务类和rpc方法描述，默认不生成
 option cc_generic_services = true;
-
+// 每个响应都返回errcode和errmsg会造成大量重复代码,封装起来
 message ResultCode
 {
     int32 errcode = 1;
@@ -25,33 +25,33 @@ message LoginResponse
     ResultCode result = 1;
     bool success = 2;
 }
-
+// 定义获取好友列表的请求
 message GetFriendListsRequest
 {
     uint32 userid = 1;
 }
-
+// 定义用户的属性
 message User
 {
     bytes name = 1;
     uint32 age = 2;
-    enum Sex
+    enum Sex //枚举类型
     {
         MAN = 0;
         WOMAN = 1;
     }
-    Sex sex = 3;
+    Sex sex = 3; // 1,2,3表示三个成员变量
 }
-
+// 定义获取好友列表的响应
 message GetFriendListsResponse
 {
-    ResultCode result = 1;
-    repeated User friend_list = 2;  // 定义了一个列表类型
+    ResultCode result = 1;  // 错误码和错误消息组合
+    repeated User friend_list = 2;  // 定义了一个列表类型,repeated重复的意思
 }
 
 // 在protobuf里面怎么定义描述rpc方法的类型 - service
 service UserServiceRpc
 {
-    rpc Login(LoginRequest) returns(LoginResponse);
+    rpc Login(LoginRequest) returns(LoginResponse); // 定义了一个Login rpc方法,参数是LoginRequest
     rpc GetFriendLists(GetFriendListsRequest) returns(GetFriendListsResponse);
 }
