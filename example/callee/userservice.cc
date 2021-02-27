@@ -2,6 +2,7 @@
 #include <string>
 #include "user.pb.h"
 #include "hltrpc_application.h"
+#include "rpc_provider.h"
 
 
 /*
